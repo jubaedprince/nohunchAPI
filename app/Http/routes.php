@@ -40,25 +40,27 @@ Route::group(['prefix'=>'/api'], function(){
             Route::get('/', 'AuthenticateController@getAuthenticatedUser');
             //set location
             Route::post('location', 'UserController@setLocation');
-            //question
-            Route::resource('question', 'QuestionController');
-            //add friend
-            Route::get('friend/{user_id}', 'AuthenticateController@addFriend');
-            //get all friends of logged in user
-            Route::get('friends', 'AuthenticateController@getAllFriend');
-            //add follower
-            Route::get('follower/{follower}','AuthenticateController@addFollower');
-            //get all followers
-            Route::get('followers','AuthenticateController@getAllFollower');
-            //set active question
-            Route::get('question/active/{question}', 'QuestionController@setActiveQuestion');
-            //get all questions by logged in user
-            Route::get('questions', 'QuestionController@getAll');
+
         });
 
-
+        //question
+        Route::resource('question', 'QuestionController');
         //get all answers of a question
         Route::get('question/{question}/answers','QuestionController@getAllAnswers');
+        //add friend
+        Route::get('friend/{user_id}', 'AuthenticateController@addFriend');
+        //get all friends of logged in user
+        Route::get('friends', 'AuthenticateController@getAllFriend');
+        //add follower
+        Route::get('follower/{follower}','AuthenticateController@addFollower');
+        //get all followers
+        Route::get('followers','AuthenticateController@getAllFollower');
+
+        //set active question
+        //Route::get('question/active/{question}', 'QuestionController@setActiveQuestion');
+
+        //get all questions by logged in user
+        Route::get('questions', 'QuestionController@getAll');
 
 
         //answer
