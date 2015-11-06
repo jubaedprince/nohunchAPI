@@ -24,7 +24,6 @@ Route::group(['prefix'=>'/api'], function(){
            'message' => "hey there! You are in the api home"
        ]);
    });
-
     //user authentication & registration
     Route::post('register', 'AuthenticateController@register');
     Route::post('authenticate', 'AuthenticateController@authenticate');
@@ -37,12 +36,12 @@ Route::group(['prefix'=>'/api'], function(){
        });
 
         Route::group(['prefix' => 'user'], function(){
-           Route::post('location', 'UserController@setLocation');
-
-            //question
-            Route::resource('question', 'QuestionController');
             //get current user information
             Route::get('/', 'AuthenticateController@getAuthenticatedUser');
+            //set location
+            Route::post('location', 'UserController@setLocation');
+            //question
+            Route::resource('question', 'QuestionController');
             //add friend
             Route::get('friend/{user_id}', 'AuthenticateController@addFriend');
             //get all friends of logged in user
@@ -51,15 +50,16 @@ Route::group(['prefix'=>'/api'], function(){
             Route::get('follower/{follower}','AuthenticateController@addFollower');
             //get all followers
             Route::get('followers','AuthenticateController@getAllFollower');
-
+            //set active question
+            Route::get('question/active/{question}', 'QuestionController@setActiveQuestion');
+            //get all questions by logged in user
+            Route::get('questions', 'QuestionController@getAll');
         });
 
-        //set active question
-        Route::get('user/question/active/{question}', 'QuestionController@setActiveQuestion');
+
         //get all answers of a question
         Route::get('question/{question}/answers','QuestionController@getAllAnswers');
-        //get all questions by logged in user
-        Route::get('user/questions', 'QuestionController@getAll');
+
 
         //answer
         Route::resource('answer', 'AnswerController');
