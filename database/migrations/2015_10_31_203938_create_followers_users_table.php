@@ -5,11 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateFollowersUsersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('followers_users', function(Blueprint $table)
@@ -21,17 +17,11 @@ class CreateFollowersUsersTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('follower_id')->references('id')->on('users');
 
-
-            $table->primary(array('user_id', 'follower_id'));
+//            $table->primary(array('user_id', 'follower_id'));
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');

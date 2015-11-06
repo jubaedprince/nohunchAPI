@@ -12,14 +12,14 @@ class CreateAnswersTable extends Migration
      */
     public function up()
     {
-//        Schema::create('answers', function (Blueprint $table) {
-//            $table->increments('id');
-//            $table->string('text');
-//            $table->integer('user_id')->unsigned()->nullable();
-//            $table->integer('question_id')->unsigned()->nullable();
-//            $table->softDeletes();
-//            $table->timestamps();
-//
+        Schema::create('answers', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('text');
+            $table->integer('user_id')->unsigned();
+            $table->integer('question_id')->unsigned();
+            $table->softDeletes();
+            $table->timestamps();
+
 //            $table->foreign('user_id')
 //                ->references('id')->on('users')
 //                ->onDelete('cascade');
@@ -27,10 +27,10 @@ class CreateAnswersTable extends Migration
 //            $table->foreign('question_id')
 //                ->references('id')->on('questions')
 //                ->onDelete('cascade');
-//
-//
-//
-//        });
+
+
+
+        });
     }
 
     /**
@@ -40,9 +40,9 @@ class CreateAnswersTable extends Migration
      */
     public function down()
     {
-//        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-//        Schema::drop('answers');
-//        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::drop('answers');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
     }
 }

@@ -28,7 +28,7 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'age'];
+    protected $fillable = ['name', 'email', 'password', 'age', 'location'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -86,6 +86,30 @@ class User extends Model implements AuthenticatableContract,
     public function getAllFollowings(){
         return $this->followings()->get();
         //return $this->followers()->get();
+    }
+
+    public function setLocation($location){
+        $locationArray = [
+            "location"  =>  $location
+        ];
+        $validator = Validator::make($locationArray, array(
+            'location' => 'string',
+        ));
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success'   =>  false,
+                'message'   => "Validation error.",
+                'error'     => $validator->errors()->all(),
+            ]);
+        } else {
+            $this->location = $location;
+            return response()->json([
+                'success'   =>  true,
+                'message'   => "Location changed successfully",
+                'location'     => $location,
+            ]);
+        }
     }
 
 }

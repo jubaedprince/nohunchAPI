@@ -28,6 +28,7 @@ Route::group(['prefix'=>'/api'], function(){
     //user authentication & registration
     Route::post('register', 'AuthenticateController@register');
     Route::post('authenticate', 'AuthenticateController@authenticate');
+    //get current user information
     Route::get('user', 'AuthenticateController@getAuthenticatedUser');
     //add friend
     Route::get('user/friend/{user_id}', 'AuthenticateController@addFriend');
