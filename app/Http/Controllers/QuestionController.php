@@ -26,7 +26,8 @@ class QuestionController extends Controller
         $questions = Question::where('user_id',$user_id)->where('is_published',true)->get();
 
         return response()->json([
-            'question'   =>  $questions,
+            'success'   =>  true,
+            'question'  => $questions,
         ]);
     }
 
@@ -150,11 +151,13 @@ class QuestionController extends Controller
         $question = Question::find($question_id);
         if($question==null){
             return response()->json([
+                'success'   => true,
                 'message'  =>  'nothing to show',
             ]);
         }
         if($question->currentUserIsOwner()){
             return response()->json([
+                'success'   =>  true,
                 'question'  =>  $question,
                 'answers'   =>  $question->answers()->get(),
             ]);
@@ -162,6 +165,7 @@ class QuestionController extends Controller
         else{
             return response()->json([
                 'message'  =>  'You are not Authorized',
+                'success'   => false,
             ]);
         }
 

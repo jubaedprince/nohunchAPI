@@ -40,7 +40,10 @@ Route::group(['prefix'=>'/api'], function(){
             Route::get('/', 'AuthenticateController@getAuthenticatedUser');
             //set location
             Route::post('location', 'UserController@setLocation');
-
+            //get all photos of a user
+            Route::get('{user}/photo', 'PhotoController@index');
+            //upload a photo
+            Route::post('photo','PhotoController@store');
         });
 
         //question
@@ -55,10 +58,6 @@ Route::group(['prefix'=>'/api'], function(){
         Route::get('follower/{follower}','AuthenticateController@addFollower');
         //get all followers
         Route::get('followers','AuthenticateController@getAllFollower');
-
-        //set active question
-        //Route::get('question/active/{question}', 'QuestionController@setActiveQuestion');
-
         //get all questions by logged in user
         Route::get('questions', 'QuestionController@getAll');
 

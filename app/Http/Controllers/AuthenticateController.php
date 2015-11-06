@@ -112,7 +112,8 @@ class AuthenticateController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'age' => $data['age']
+            'age' => $data['age'],
+            'photo_count'   => 0,
         ]);
     }
 

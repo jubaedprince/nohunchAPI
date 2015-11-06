@@ -29,7 +29,7 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'age', 'location'];
+    protected $fillable = ['name', 'email', 'password', 'age', 'location','photo_count'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -42,6 +42,11 @@ class User extends Model implements AuthenticatableContract,
     public function friends()
     {
         return $this->belongsToMany('App\User', 'friends_users', 'user_id', 'friend_id');
+    }
+
+    public function photos()
+    {
+        return $this->hasMany('App\Photo');
     }
 
     public function addFriend(User $user)
