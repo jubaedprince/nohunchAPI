@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Question;
 
 class CreateQuestionsTableSeeder extends Seeder
 {
@@ -13,10 +14,18 @@ class CreateQuestionsTableSeeder extends Seeder
     {
         DB::table('questions')->delete();
 
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        $questions = array(
+            ['text' => 'hi?', 'user_id' => 2, 'location'=>'Dhaka'],
+            ['text' => 'what up?', 'user_id' => 1, 'location'=>'Dhaka'],
+            ['text' => 'kire?', 'user_id' => 2, 'location'=>'Dhaka'],
+            ['text' => 'ASL?', 'user_id' => 1, 'location'=>'Dhaka'],
 
-        factory(App\Question::class, 50)->create();
+        );
 
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        // Loop through each user above and create the record for them in the database
+        foreach ($questions as $question)
+        {
+            Question::create($question);
+        }
     }
 }

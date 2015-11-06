@@ -15,13 +15,19 @@ class CreateQuestionsTable extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('text');
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->string('location')->nullable();
-            $table->boolean('current_status');
+            $table->boolean('is_published');
+            $table->integer('answer_id')->unsigned()->nullable();
+            $table->softDeletes();
             $table->timestamps();
-            
+
             $table->foreign('user_id')
                 ->references('id')->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('answer_id')
+                ->references('id')->on('answers')
                 ->onDelete('cascade');
         });
     }
@@ -33,8 +39,8 @@ class CreateQuestionsTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('questions');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+//        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+//        Schema::dropIfExists('questions');
+//        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

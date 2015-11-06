@@ -15,10 +15,10 @@ class CreateUsersTableSeeder extends Seeder
         DB::table('users')->delete();
 
         $users = array(
-            ['name' => 'Ryan Chenkie', 'email' => 'ryanchenkie@gmail.com', 'age'=>23, 'password' => Hash::make('secret')],
-            ['name' => 'Chris Sevilleja', 'email' => 'chris@scotch.io', 'age'=>28, 'password' => Hash::make('secret')],
-            ['name' => 'Holly Lloyd', 'email' => 'holly@scotch.io', 'age'=>45, 'password' => Hash::make('secret')],
-            ['name' => 'Adnan Kukic', 'email' => 'jubaedprince@hotmail.com', 'age'=>22, 'password' => Hash::make('secret')],
+            ['name' => 'Ryan Chenkie', 'email' => 'ryanchenkie@gmail.com', 'username'=>'username1','age'=>23, 'password' => Hash::make('secret')],
+            ['name' => 'Chris Sevilleja', 'email' => 'chris@scotch.io', 'username'=>'username2', 'age'=>28, 'password' => Hash::make('secret')],
+            ['name' => 'Holly Lloyd', 'email' => 'holly@scotch.io', 'username'=>'username3', 'age'=>45, 'password' => Hash::make('secret')],
+            ['name' => 'Adnan Kukic', 'email' => 'jubaedprince@hotmail.com', 'username'=>'username4', 'age'=>22, 'password' => Hash::make('secret')],
         );
 
         // Loop through each user above and create the record for them in the database

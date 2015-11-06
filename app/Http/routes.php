@@ -21,7 +21,7 @@ Route::group(['prefix'=>'/api'], function(){
     Route::get('/', function(){
        return response()->json([
            'success' => true,
-           'message' => "You are in the api home"
+           'message' => "hey there! You are in the api home"
        ]);
    });
 
@@ -29,6 +29,17 @@ Route::group(['prefix'=>'/api'], function(){
     Route::post('register', 'AuthenticateController@register');
     Route::post('authenticate', 'AuthenticateController@authenticate');
     Route::get('user', 'AuthenticateController@getAuthenticatedUser');
+    //add friend
+    Route::get('user/friend/{user_id}', 'AuthenticateController@addFriend');
+    //get all friends of logged in user
+    Route::get('user/friends', 'AuthenticateController@getAllFriend');
+
+
+    //add follower
+    Route::get('user/follower/{follower}','AuthenticateController@addFollower');
+    //get all followers
+    Route::get('user/followers','AuthenticateController@getAllFollower');
+
 
     //endpoints accessable by only authenticated users.
 
@@ -37,10 +48,21 @@ Route::group(['prefix'=>'/api'], function(){
             return "You are in authenticated route.";
        });
 
+        //question
         Route::resource('question', 'QuestionController');
+        //set active question
+        Route::get('user/question/active/{question}', 'QuestionController@setActiveQuestion');
+        //get all answers of a question
+        Route::get('question/{question}/answers','QuestionController@getAllAnswers');
+        //get all questions by logged in user
+        Route::get('user/questions', 'QuestionController@getAll');
+
+        //answer
+        Route::resource('answer', 'AnswerController');
     });
 
 
 
 
 });
+

@@ -92,6 +92,20 @@ class AuthenticateController extends Controller
 
     }
 
+
+    public function addFriend($user_id){
+        $friend = User::find($user_id);
+        $user = JWTAuth::parseToken()->authenticate();
+        //TODO: check if they are already friends and then add
+        JWTAuth::parseToken()->authenticate()->addFriend($friend);
+
+    }
+
+    public function getAllFriend(){
+        $user = JWTAuth::parseToken()->authenticate();
+        return $user->getAllFriends();
+    }
+
     protected function create(array $data)
     {
         return User::create([
@@ -101,5 +115,27 @@ class AuthenticateController extends Controller
             'age' => $data['age']
         ]);
     }
+
+
+    //followers
+
+
+    public function addFollower($user_id){
+        $follower = User::find($user_id);
+        $user = JWTAuth::parseToken()->authenticate();
+        //TODO: check if he/she already follows and then add
+        JWTAuth::parseToken()->authenticate()->addFollower($follower);
+
+    }
+
+    public function getAllFollower(){
+        $user = JWTAuth::parseToken()->authenticate();
+        $temp = User::find(19);
+        return response()->json([
+            'followers'   =>  $temp->getAllFollowings(),
+        ]);
+        //return $user->getAllFollowers();
+    }
+
 
 }

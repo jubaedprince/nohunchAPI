@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
-class Question extends Model
+use JWTAuth;
+
+
+class Answer extends Model
 {
     use SoftDeletes;
     /**
@@ -14,20 +16,20 @@ class Question extends Model
      *
      * @var string
      */
-    protected $table = 'questions';
+    protected $table = 'answers';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['text', 'user_id', 'location', 'is_published'];
+    protected $fillable = ['text', 'user_id', 'question_id'];
 
     protected $dates = ['deleted_at'];
 
-    public function answers()
+    public function question()
     {
-        return $this->hasMany('App\Answer');
+        return $this->belongsTo('App\Question');
     }
 
     public function currentUserIsOwner(){
