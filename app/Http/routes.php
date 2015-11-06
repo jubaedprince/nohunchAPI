@@ -28,19 +28,6 @@ Route::group(['prefix'=>'/api'], function(){
     //user authentication & registration
     Route::post('register', 'AuthenticateController@register');
     Route::post('authenticate', 'AuthenticateController@authenticate');
-    //get current user information
-    Route::get('user', 'AuthenticateController@getAuthenticatedUser');
-    //add friend
-    Route::get('user/friend/{user_id}', 'AuthenticateController@addFriend');
-    //get all friends of logged in user
-    Route::get('user/friends', 'AuthenticateController@getAllFriend');
-
-
-    //add follower
-    Route::get('user/follower/{follower}','AuthenticateController@addFollower');
-    //get all followers
-    Route::get('user/followers','AuthenticateController@getAllFollower');
-
 
     //endpoints accessable by only authenticated users.
 
@@ -54,7 +41,6 @@ Route::group(['prefix'=>'/api'], function(){
 
             //question
             Route::resource('question', 'QuestionController');
-
             //get current user information
             Route::get('/', 'AuthenticateController@getAuthenticatedUser');
             //add friend
