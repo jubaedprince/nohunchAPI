@@ -15,10 +15,10 @@ class CreateQuestionsTableSeeder extends Seeder
         DB::table('questions')->delete();
 
         $questions = array(
-            ['text' => 'hi?', 'user_id' => 2, 'location'=>'Dhaka'],
-            ['text' => 'what up?', 'user_id' => 1, 'location'=>'Dhaka'],
-            ['text' => 'kire?', 'user_id' => 2, 'location'=>'Dhaka'],
-            ['text' => 'ASL?', 'user_id' => 1, 'location'=>'Dhaka'],
+            ['question' => 'question1?', 'user_id' => 3,],
+            ['question' => 'question2?', 'user_id' => 2,],
+            ['question' => 'question3?', 'user_id' => 4,],
+            ['question' => 'question4?', 'user_id' => 1,],
 
         );
 

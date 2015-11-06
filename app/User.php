@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Facades\Validator;
 
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
@@ -89,27 +90,14 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public function setLocation($location){
-        $locationArray = [
-            "location"  =>  $location
-        ];
-        $validator = Validator::make($locationArray, array(
-            'location' => 'string',
-        ));
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success'   =>  false,
-                'message'   => "Validation error.",
-                'error'     => $validator->errors()->all(),
-            ]);
-        } else {
-            $this->location = $location;
-            return response()->json([
-                'success'   =>  true,
-                'message'   => "Location changed successfully",
-                'location'     => $location,
-            ]);
+        if ($location == ""){
+            $this->location = null;
+            $this->save();
         }
-    }
+        else{
+            $this->location = $location;
+            $this->save();
+        }
 
+    }
 }

@@ -46,24 +46,22 @@ class QuestionController extends Controller
 
         //validate data
         $validator = Validator::make($request->all(), array(
-            'text' => 'required|max:255',
-            'location' => 'required',
+            'question' => 'required|max:255',
         ));
 
         if ($validator->fails()) {
             return $validator->errors()->all();
         } else {
             Question::create([
-                'text' => $request['text'],
+                'question' => $request['question'],
                 'user_id' => $user_id,
-                'location' => $request['location'],
                 'is_published' => true,
             ]);
 
             return response()->json([
                 'success'   =>  true,
                 'message'   => "Question Added Successfully",
-                'question'  => $request['text'],
+                'question'  => $request['question'],
             ]);
         }
     }

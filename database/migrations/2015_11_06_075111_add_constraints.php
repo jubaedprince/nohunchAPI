@@ -16,10 +16,6 @@ class AddConstraints extends Migration
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
-
-            $table->foreign('answer_id')
-                ->references('id')->on('answers')
-                ->onDelete('cascade');
         });
 
         Schema::table('answers', function ($table) {
@@ -43,20 +39,5 @@ class AddConstraints extends Migration
      */
     public function down()
     {
-        Schema::table('questions', function ($table) {
-            $table->dropForeign('answer_id_user_id')
-                ->references('id')->on('users')
-                ->onDelete('cascade');
-
-
-        });
-
-        Schema::table('answers', function ($table) {
-            $table->dropForeign('user_id_question_id')
-                ->references('id')->on('users')
-                ->onDelete('cascade');
-
-
-        });
     }
 }

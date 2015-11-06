@@ -49,8 +49,25 @@ Route::group(['prefix'=>'/api'], function(){
             return "You are in authenticated route.";
        });
 
-        //question
-        Route::resource('question', 'QuestionController');
+        Route::group(['prefix' => 'user'], function(){
+           Route::post('location', 'UserController@setLocation');
+
+            //question
+            Route::resource('question', 'QuestionController');
+
+            //get current user information
+            Route::get('/', 'AuthenticateController@getAuthenticatedUser');
+            //add friend
+            Route::get('friend/{user_id}', 'AuthenticateController@addFriend');
+            //get all friends of logged in user
+            Route::get('friends', 'AuthenticateController@getAllFriend');
+            //add follower
+            Route::get('follower/{follower}','AuthenticateController@addFollower');
+            //get all followers
+            Route::get('followers','AuthenticateController@getAllFollower');
+
+        });
+
         //set active question
         Route::get('user/question/active/{question}', 'QuestionController@setActiveQuestion');
         //get all answers of a question
