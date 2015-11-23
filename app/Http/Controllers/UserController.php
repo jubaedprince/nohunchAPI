@@ -7,6 +7,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Validator;
+ //TODO:: add this to local code and push later
+use App\User;
 class UserController extends Controller
 {
     public function setLocation(Request $request){
@@ -33,5 +35,14 @@ class UserController extends Controller
             ]);
         }
 
+    }
+    //TODO:: add this to local code and push later
+    public function getAllUsers(){
+        
+         return response()->json([
+                 'success' => true,
+                'message' => "Users are found",
+                'users' => User::all(),
+            ]);
     }
 }

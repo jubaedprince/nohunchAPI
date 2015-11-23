@@ -4,7 +4,12 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "hash": "54e08d6fbc79ae3c4624e834ba45beb7",
+=======
+    "hash": "15973200bb4d467ba7042e3907a7bca4",
+    "content-hash": "f785bf5da12015b3a731b9f144c426a5",
+>>>>>>> 026c4a9d674ab3e91ed479126101a0661de37cad
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -151,6 +156,7 @@
                 "preload"
             ],
             "time": "2015-11-09 22:51:51"
+<<<<<<< HEAD
         },
         {
             "name": "cmgmyr/messenger",
@@ -204,6 +210,8 @@
                 "user messaging"
             ],
             "time": "2015-10-28 22:32:55"
+=======
+>>>>>>> 026c4a9d674ab3e91ed479126101a0661de37cad
         },
         {
             "name": "danielstjules/stringy",

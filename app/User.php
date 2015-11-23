@@ -37,6 +37,13 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+    
+    protected $appends = ['question'];
+    
+    public function getQuestionAttribute(){
+        $questions = Question::where('user_id',$this->id)->where('is_published',true)->first();
+         return $questions ;
+    }
 
 
     public function friends()

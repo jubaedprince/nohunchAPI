@@ -46,7 +46,11 @@ Route::group(['prefix'=>'/api'], function(){
        Route::get('authenticatedRoute', function(){
             return "You are in authenticated route.";
        });
+        //TODO:: add this to local code and push later
 
+        //get all users
+        Route::get('users', 'UserController@getAllUsers');
+            
         Route::group(['prefix' => 'user'], function(){
             //get current user information
             Route::get('/', 'AuthenticateController@getAuthenticatedUser');
