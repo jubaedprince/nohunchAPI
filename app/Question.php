@@ -31,4 +31,10 @@ class Question extends Model
             return false;
         }
     }
+
+    public function owner(){
+        $user_id = $this->user_id;
+        $user = User::find($user_id);
+        return $user;
+    }
 }

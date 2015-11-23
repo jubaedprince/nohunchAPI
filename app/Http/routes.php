@@ -85,6 +85,9 @@ Route::group(['prefix'=>'/api'], function(){
         //get all questions by logged in user
         Route::get('questions', 'QuestionController@getAll');
 
+        //test
+        Route::get('test/{question_id}', 'QuestionController@getOwner');
+
 
         //answer
         Route::resource('answer', 'AnswerController');

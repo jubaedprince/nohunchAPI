@@ -209,4 +209,9 @@ class QuestionController extends Controller
 
     }
 
+    public function getOwner($question_id){
+        $question = Question::find($question_id);
+        dd($question->owner());
+    }
+
 }
