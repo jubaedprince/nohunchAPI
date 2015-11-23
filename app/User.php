@@ -58,7 +58,9 @@ class User extends Model implements AuthenticatableContract,
     public function removeFriend(User $user)
     {
         $this->friends()->detach($user->id);
+        $this->followings()->detach($user->id);
         $user->friends()->detach($this->id);
+        $user->followings()->detach($this->id);
     }
 
     public function getAllFriends(){
@@ -71,14 +73,6 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsToMany('App\User', 'followers_users', 'user_id', 'follower_id');
     }
 
-    public function addFollower(User $user){
-        $this->followers()->attach($user->id);
-    }
-
-    public function removeFollowers(User $user){
-        $this->followers()->detach($user->id);
-    }
-
     public function getAllFollowers(){
         return $this->followers()->get();
     }
@@ -89,11 +83,26 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsToMany('App\User', 'followers_users', 'follower_id', 'user_id');
     }
 
+    public function addFollowing(User $user){
+        $this->followings()->attach($user->id);
+    }
+
     public function getAllFollowings(){
         return $this->followings()->get();
         //return $this->followers()->get();
     }
 
+    public function isFollowing($user){
+
+        if($this->followings()->find($user)!=null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    //location
     public function setLocation($location){
         if ($location == ""){
             $this->location = null;

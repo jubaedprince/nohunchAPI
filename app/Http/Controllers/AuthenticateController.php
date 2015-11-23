@@ -92,12 +92,16 @@ class AuthenticateController extends Controller
 
     }
 
-
+    //friend
     public function addFriend($user_id){
         $friend = User::find($user_id);
-        $user = JWTAuth::parseToken()->authenticate();
-        //TODO: check if they are already friends and then add
         JWTAuth::parseToken()->authenticate()->addFriend($friend);
+        return "success";
+    }
+
+    public function removeFriend($user_id){
+        $friend = User::find($user_id);
+        JWTAuth::parseToken()->authenticate()->removeFriend($friend);
         return "success";
     }
 
@@ -119,23 +123,40 @@ class AuthenticateController extends Controller
 
 
     //followers
+    public function addFollowing($user_id){
+        $following = User::find($user_id);
+        $this_user = JWTAuth::parseToken()->authenticate();
 
-
-    public function addFollower($user_id){
-        $follower = User::find($user_id);
-        $user = JWTAuth::parseToken()->authenticate();
-        //TODO: check if he/she already follows and then add
-        JWTAuth::parseToken()->authenticate()->addFollower($follower);
-        return "success";
+        if($this_user->isFollowing($user_id)){
+            return "you are already following";
+        }else{
+            $this_user->addFollowing($following);
+            if($following->isFollowing($this_user->id)){//both follow each other
+                $this_user->addFriend($following);
+                return "you are now friends.";
+            }
+            return "success";
+        }
     }
 
+    public function getAllFollowing(){
+        $user = JWTAuth::parseToken()->authenticate();
+        return response()->json([
+            'following'   =>  $user->getAllFollowings(),
+        ]);
+    }
+
+    public function isFollowing($user){
+        $this_user = JWTAuth::parseToken()->authenticate();
+        return $this_user->isFollowing($user);
+    }
+
+    //follower
     public function getAllFollower(){
         $user = JWTAuth::parseToken()->authenticate();
-        $temp = User::find(19);
         return response()->json([
-            'followers'   =>  $temp->getAllFollowings(),
+            'follower'   =>  $user->getAllFollowers(),
         ]);
-        //return $user->getAllFollowers();
     }
 
 

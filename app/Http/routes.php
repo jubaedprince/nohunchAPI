@@ -50,14 +50,21 @@ Route::group(['prefix'=>'/api'], function(){
         Route::resource('question', 'QuestionController');
         //get all answers of a question
         Route::get('question/{question}/answers','QuestionController@getAllAnswers');
-        //add friend
-        Route::get('friend/{user_id}', 'AuthenticateController@addFriend');
+
         //get all friends of logged in user
-        Route::get('friends', 'AuthenticateController@getAllFriend');
-        //add follower
-        Route::get('follower/{follower}','AuthenticateController@addFollower');
+        Route::get('friend', 'AuthenticateController@getAllFriend');
+        //remove friend
+        Route::get('unfriend/{user_id}', 'AuthenticateController@removeFriend');
+
+
+        //add following
+        Route::get('follow/{follow}','AuthenticateController@addFollowing');
+        //get all following
+        Route::get('following','AuthenticateController@getAllFollowing');
+
         //get all followers
-        Route::get('followers','AuthenticateController@getAllFollower');
+        Route::get('follower','AuthenticateController@getAllFollower');
+
         //get all questions by logged in user
         Route::get('questions', 'QuestionController@getAll');
 
