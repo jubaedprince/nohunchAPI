@@ -147,7 +147,8 @@ return [
 
         //third Party packages
 
-        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider'
+        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
+        'Barryvdh\Cors\ServiceProvider',
 
     ],
 

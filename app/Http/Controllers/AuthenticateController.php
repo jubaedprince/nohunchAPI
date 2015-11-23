@@ -98,7 +98,7 @@ class AuthenticateController extends Controller
         $user = JWTAuth::parseToken()->authenticate();
         //TODO: check if they are already friends and then add
         JWTAuth::parseToken()->authenticate()->addFriend($friend);
-
+        return "success";
     }
 
     public function getAllFriend(){
@@ -126,7 +126,7 @@ class AuthenticateController extends Controller
         $user = JWTAuth::parseToken()->authenticate();
         //TODO: check if he/she already follows and then add
         JWTAuth::parseToken()->authenticate()->addFollower($follower);
-
+        return "success";
     }
 
     public function getAllFollower(){

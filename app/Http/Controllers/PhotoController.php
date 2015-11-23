@@ -10,6 +10,8 @@ use JWTAuth;
 use Illuminate\Support\Facades\Storage;
 use App\Photo;
 use Validator;
+use File;
+use Response;
 
 class PhotoController extends Controller
 {
@@ -21,7 +23,15 @@ class PhotoController extends Controller
     public function index($user_id)
     {
         $user  = User::find($user_id);
-        return $user->photos();
+        $photos = $user->photos()->get();
+
+        foreach($photos as $photo){
+            $file = Storage::disk('local')->get($photo->photo_location);
+            return Response::make($file, 200, ['Content-Type'=>'image/jpg']);
+        }
+
+        return ;
+
     }
 
 
@@ -45,13 +55,19 @@ class PhotoController extends Controller
             return $validator->errors()->all();
         } else {
             if($user->photo_count <5){
+                $photo = $request->file('photo');
                 $random_string = md5(microtime());
                 $name = 'photos/'.$user->id . '-' . $random_string . '.' . $request->file('photo')->getClientOriginalExtension();
-                Storage::put($name, file_get_contents($request->file('photo')->getRealPath()));
+                Storage::disk('local')->put($name,File::get($photo));
                 $photo = Photo::create([
-                    'photo_location' => 'uploads/' . $name,
+                    'photo_location' => $name,
                     'user_id'        => $user_id
                 ]);
+
+                $user->photo_count = $user->photo_count + 1;
+
+                $user->save();
+
                 return "Done";
             }else{
                 return "More than 5 photos";
