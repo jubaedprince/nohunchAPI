@@ -16,6 +16,8 @@ Route::get('/', function () {
     return "Welcome to NoHunch. Please go to /api to access the api.";
 });
 
+
+
 //Write all the API Endpoints in the below group.
 Route::group(['prefix'=>'/api'], function(){
     Route::get('/', function(){
@@ -24,6 +26,16 @@ Route::group(['prefix'=>'/api'], function(){
            'message' => "hey there! You are in the api home"
        ]);
    });
+
+    //messages
+    Route::group(['prefix' => 'messages'], function () {
+        Route::get('/', ['as' => 'messages', 'uses' => 'MessageController@index']);
+        Route::get('create', ['as' => 'messages.create', 'uses' => 'MessageController@create']);
+        Route::post('/', ['as' => 'messages.store', 'uses' => 'MessageController@store']);
+        Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessageController@show']);
+        Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessageController@update']);
+    });
+
     //user authentication & registration
     Route::post('register', 'AuthenticateController@register');
     Route::post('authenticate', 'AuthenticateController@authenticate');
@@ -34,7 +46,11 @@ Route::group(['prefix'=>'/api'], function(){
        Route::get('authenticatedRoute', function(){
             return "You are in authenticated route.";
        });
+        //TODO:: add this to local code and push later
 
+        //get all users
+        Route::get('users', 'UserController@getAllUsers');
+            
         Route::group(['prefix' => 'user'], function(){
             //get current user information
             Route::get('/', 'AuthenticateController@getAuthenticatedUser');
@@ -44,6 +60,7 @@ Route::group(['prefix'=>'/api'], function(){
             Route::get('{user}/photo', 'PhotoController@index');
             //upload a photo
             Route::post('photo','PhotoController@store');
+
         });
 
         //question
