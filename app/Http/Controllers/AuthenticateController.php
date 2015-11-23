@@ -159,5 +159,14 @@ class AuthenticateController extends Controller
         ]);
     }
 
+    //remove follower
+    public function removeFollower($user_id){
+        $user = User::find($user_id);
+        $this_user = JWTAuth::parseToken()->authenticate();
+        $this_user->removeFollower($user);
+        $this_user->removeAnswersBy($user);
+        return "success";
+    }
+
 
 }

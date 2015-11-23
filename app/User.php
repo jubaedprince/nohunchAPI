@@ -84,6 +84,10 @@ class User extends Model implements AuthenticatableContract,
         return $this->followers()->get();
     }
 
+    public function removeFollower(User $user){
+        $this->followers()->detach($user->id);
+    }
+
     //folllowing
     public function followings()
     {
@@ -92,6 +96,10 @@ class User extends Model implements AuthenticatableContract,
 
     public function addFollowing(User $user){
         $this->followings()->attach($user->id);
+    }
+
+    public function removeFollowing(User $user){
+        $this->followings()->detach($user->id);
     }
 
     public function getAllFollowings(){
@@ -120,5 +128,21 @@ class User extends Model implements AuthenticatableContract,
             $this->save();
         }
 
+    }
+
+    public function removeAnswersBy($user){
+        $questions = Question::where('user_id',$this->id)->where('is_published',true)->first();
+
+        if($questions!=null){
+            $answer = Answer::where('question_id',$questions->id)->where('user_id',$user->id)->first();
+//            dd($answer);
+            if($answer!=null){
+                $answer->delete();
+                return "success";
+            }else{
+                return "no answer found";
+            }
+        }
+        return "no published questions";
     }
 }

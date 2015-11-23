@@ -81,6 +81,8 @@ Route::group(['prefix'=>'/api'], function(){
 
         //get all followers
         Route::get('follower','AuthenticateController@getAllFollower');
+        //remove follower
+        Route::get('follower/remove/{follower}','AuthenticateController@removeFollower');
 
         //get all questions by logged in user
         Route::get('questions', 'QuestionController@getAll');
