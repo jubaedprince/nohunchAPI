@@ -149,6 +149,7 @@ return [
 
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
         'Barryvdh\Cors\ServiceProvider',
+        Cmgmyr\Messenger\MessengerServiceProvider::class,
 
     ],
 
