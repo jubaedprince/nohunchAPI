@@ -84,7 +84,7 @@ class AnswerController extends Controller
                     'user_id' => $user_id,
                     'question_id' => $request['question_id'],
                 ]);
-                
+
                 try{
                     $user->addFollowing($question_owner);
                 }catch (Exception $e){
