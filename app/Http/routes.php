@@ -29,11 +29,12 @@ Route::group(['prefix'=>'/api'], function(){
 
     //messages
     Route::group(['prefix' => 'messages'], function () {
+        //get all message threads
         Route::get('/', ['as' => 'messages', 'uses' => 'MessageController@index']);
-        Route::get('create', ['as' => 'messages.create', 'uses' => 'MessageController@create']);
+        //send message
         Route::post('/', ['as' => 'messages.store', 'uses' => 'MessageController@store']);
+        //show individual thread
         Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessageController@show']);
-        Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessageController@update']);
     });
 
     //user authentication & registration
