@@ -65,7 +65,9 @@ class User extends Model implements AuthenticatableContract,
     public function removeFriend(User $user)
     {
         $this->friends()->detach($user->id);
+        $this->followings()->detach($user->id);
         $user->friends()->detach($this->id);
+        $user->followings()->detach($this->id);
     }
 
     public function getAllFriends(){
@@ -78,16 +80,12 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsToMany('App\User', 'followers_users', 'user_id', 'follower_id');
     }
 
-    public function addFollower(User $user){
-        $this->followers()->attach($user->id);
-    }
-
-    public function removeFollowers(User $user){
-        $this->followers()->detach($user->id);
-    }
-
     public function getAllFollowers(){
         return $this->followers()->get();
+    }
+
+    public function removeFollower(User $user){
+        $this->followers()->detach($user->id);
     }
 
     //folllowing
@@ -96,11 +94,30 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsToMany('App\User', 'followers_users', 'follower_id', 'user_id');
     }
 
+    public function addFollowing(User $user){
+        $this->followings()->attach($user->id);
+    }
+
+    public function removeFollowing(User $user){
+        $this->followings()->detach($user->id);
+    }
+
     public function getAllFollowings(){
         return $this->followings()->get();
         //return $this->followers()->get();
     }
 
+    public function isFollowing($user){
+
+        if($this->followings()->find($user)!=null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    //location
     public function setLocation($location){
         if ($location == ""){
             $this->location = null;
@@ -111,5 +128,21 @@ class User extends Model implements AuthenticatableContract,
             $this->save();
         }
 
+    }
+
+    public function removeAnswersBy($user){
+        $questions = Question::where('user_id',$this->id)->where('is_published',true)->first();
+
+        if($questions!=null){
+            $answer = Answer::where('question_id',$questions->id)->where('user_id',$user->id)->first();
+//            dd($answer);
+            if($answer!=null){
+                $answer->delete();
+                return "success";
+            }else{
+                return "no answer found";
+            }
+        }
+        return "no published questions";
     }
 }

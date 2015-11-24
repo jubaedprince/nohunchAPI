@@ -58,7 +58,11 @@ Route::group(['prefix'=>'/api'], function(){
             //set location
             Route::post('location', 'UserController@setLocation');
             //get all photos of a user
-            Route::get('{user}/photo', 'PhotoController@index');
+            Route::get('{user}/photo/{photo}', 'PhotoController@index');
+            //get photo count of a user
+            Route::get('{user}/photocount', 'PhotoController@photoCount');
+            //delete a photo
+            Route::delete('photo/{photo}', 'PhotoController@destroy');
             //upload a photo
             Route::post('photo','PhotoController@store');
 
@@ -68,16 +72,28 @@ Route::group(['prefix'=>'/api'], function(){
         Route::resource('question', 'QuestionController');
         //get all answers of a question
         Route::get('question/{question}/answers','QuestionController@getAllAnswers');
-        //add friend
-        Route::get('friend/{user_id}', 'AuthenticateController@addFriend');
+
         //get all friends of logged in user
-        Route::get('friends', 'AuthenticateController@getAllFriend');
-        //add follower
-        Route::get('follower/{follower}','AuthenticateController@addFollower');
+        Route::get('friend', 'AuthenticateController@getAllFriend');
+        //remove friend
+        Route::get('unfriend/{user_id}', 'AuthenticateController@removeFriend');
+
+
+        //add following
+        Route::get('follow/{follow}','AuthenticateController@addFollowing');
+        //get all following
+        Route::get('following','AuthenticateController@getAllFollowing');
+
         //get all followers
-        Route::get('followers','AuthenticateController@getAllFollower');
+        Route::get('follower','AuthenticateController@getAllFollower');
+        //remove follower
+        Route::get('follower/remove/{follower}','AuthenticateController@removeFollower');
+
         //get all questions by logged in user
         Route::get('questions', 'QuestionController@getAll');
+
+        //test
+        Route::get('test/{question_id}', 'QuestionController@getOwner');
 
 
         //answer

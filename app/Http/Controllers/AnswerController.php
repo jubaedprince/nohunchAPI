@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use JWTAuth;
+use PhpSpec\Exception\Exception;
 use Validator;
 
 
@@ -58,6 +59,8 @@ class AnswerController extends Controller
     {
         $user = JWTAuth::parseToken()->authenticate();
         $user_id = $user->id;
+        $question = Question::find($request['question_id']);
+        $question_owner = $question->owner();
 
         //validate data
         $validator = Validator::make($request->all(), array(
@@ -81,6 +84,12 @@ class AnswerController extends Controller
                     'user_id' => $user_id,
                     'question_id' => $request['question_id'],
                 ]);
+
+                try{
+                    $user->addFollowing($question_owner);
+                }catch (Exception $e){
+
+                }
             }
 
             return response()->json([

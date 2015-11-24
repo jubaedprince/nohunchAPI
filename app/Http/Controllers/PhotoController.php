@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use JWTAuth;
 use Illuminate\Support\Facades\Storage;
 use App\Photo;
+use PhpSpec\Exception\Exception;
 use Validator;
 use File;
 use Response;
@@ -20,18 +21,21 @@ class PhotoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($user_id)
+    public function index($user_id,$photo_number)
     {
         $user  = User::find($user_id);
         $photos = $user->photos()->get();
 
-        foreach($photos as $photo){
+        if((count($photos)<=$photo_number-1)||$photo_number-1<0){
+            return response()->json([
+                'success'   =>  false,
+                'message'   => "Photo not found",
+            ]);
+        }else{
+            $photo = $photos[$photo_number-1];
             $file = Storage::disk('local')->get($photo->photo_location);
             return Response::make($file, 200, ['Content-Type'=>'image/jpg']);
         }
-
-        return ;
-
     }
 
 
@@ -68,9 +72,15 @@ class PhotoController extends Controller
 
                 $user->save();
 
-                return "Done";
+                return response()->json([
+                    'success'   =>  true,
+                    'message'   => "Successfully uploaded",
+                ]);
             }else{
-                return "More than 5 photos";
+                return response()->json([
+                    'success'   =>  false,
+                    'message'   => "More than 5 photos are not allowed",
+                ]);
             }
         }
 
@@ -116,8 +126,37 @@ class PhotoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($photo_number)
     {
-        //
+        $user = JWTAuth::parseToken()->authenticate();
+        $photos = $user->photos()->get();
+
+        if((count($photos)<=$photo_number-1)||$photo_number-1<0){
+            return response()->json([
+                'success'   =>  false,
+                'message'   => "Photo not found",
+            ]);
+        }else{
+            try{
+                $photo = $photos[$photo_number-1];
+                $photo->delete();
+                return response()->json([
+                    'success'   =>  true,
+                    'message'   => "Photo deleted successfully",
+                ]);
+            }catch (Exception $e){
+                return response()->json([
+                    'success'   =>  false,
+                    'message'   => "Something went wrong",
+                ]);
+            }
+
+        }
+    }
+
+    public function photoCount($user_id){
+        $user  = User::find($user_id);
+        $photos = $user->photos()->get();
+        return count($photos);
     }
 }
