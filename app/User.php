@@ -38,11 +38,16 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
     
-    protected $appends = ['question'];
+    protected $appends = ['question','photos'];
     
     public function getQuestionAttribute(){
         $questions = Question::where('user_id',$this->id)->where('is_published',true)->first();
          return $questions ;
+    }
+
+    public function getPhotosAttribute(){
+        $photos = $this->photos()->get();
+        return $photos ;
     }
 
 
