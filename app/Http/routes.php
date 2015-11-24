@@ -56,9 +56,11 @@ Route::group(['prefix'=>'/api'], function(){
             //get current user information
             Route::get('/', 'AuthenticateController@getAuthenticatedUser');
             //set location
+            Route::get('/{user_id}', 'AuthenticateController@getUser');
+            //set location
             Route::post('location', 'UserController@setLocation');
             //get all photos of a user
-            Route::get('{user}/photo/{photo}', 'PhotoController@index');
+            Route::get('{user}/photo', 'PhotoController@index');
             //get photo count of a user
             Route::get('{user}/photocount', 'PhotoController@photoCount');
             //delete a photo

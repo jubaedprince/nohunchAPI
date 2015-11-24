@@ -36,6 +36,15 @@ class AuthenticateController extends Controller
         ]);
     }
 
+    public function getUser(){
+        if (! $user = JWTAuth::parseToken()->authenticate()) {
+            return response()->json([
+                'success'   =>  false,
+                'message'   => "please log in to view this profile",
+            ]);
+        }
+    }
+
     public function getAuthenticatedUser()
     {
         try {

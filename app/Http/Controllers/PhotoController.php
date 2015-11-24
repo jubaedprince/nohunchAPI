@@ -32,9 +32,7 @@ class PhotoController extends Controller
                 'message'   => "Photo not found",
             ]);
         }else{
-            $photo = $photos[$photo_number-1];
-            $file = Storage::disk('local')->get($photo->photo_location);
-            return Response::make($file, 200, ['Content-Type'=>'image/jpg']);
+            return $photos;
         }
     }
 
@@ -62,7 +60,16 @@ class PhotoController extends Controller
                 $photo = $request->file('photo');
                 $random_string = md5(microtime());
                 $name = 'photos/'.$user->id . '-' . $random_string . '.' . $request->file('photo')->getClientOriginalExtension();
-                Storage::disk('local')->put($name,File::get($photo));
+
+
+                Storage::put(
+                    $name,
+                    file_get_contents($request->file('photo')->getRealPath())
+                );
+
+
+                //Storage::disk('local')->put($name,File::get($photo));
+
                 $photo = Photo::create([
                     'photo_location' => $name,
                     'user_id'        => $user_id
