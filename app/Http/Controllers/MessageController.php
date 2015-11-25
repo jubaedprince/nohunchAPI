@@ -26,14 +26,26 @@ class MessageController extends Controller
         // All threads, ignore deleted/archived participants
 //        $threads = Thread::getAllLatest()->get();
         // All threads that user is participating in
-         $threads = Thread::forUser($currentUserId)->latest('updated_at')->get()->unique();
+
         // All threads that user is participating in, with new messages
-        // $threads = Thread::forUserWithNewMessages($currentUserId)->latest('updated_at')->get();
-//        return view('messenger.index', compact('threads', 'currentUserId'));
+         $threads = Thread::forUser($currentUserId)->latest('updated_at')->get();
+
+        $temp =[];
+        foreach($threads as $thread){
+            $message= Thread::findOrFail($thread->id)->messages()->latest()->first();
+            $ids = $thread->participantsUserIds();
+            $temp2 = null;
+            foreach($ids as $id){
+                if ($id != $currentUserId){
+                    $temp2 = $id;
+                }
+            }
+            array_push($temp, [$thread,$message->body, User::find($temp2)]);
+        }
         return response()->json([
             'success'   =>  true,
             'message'   => "Successful",
-            'threads'      => $threads
+            'threads'      => $temp
         ]);
     }
     /**

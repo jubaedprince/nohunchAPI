@@ -62,6 +62,15 @@ class AnswerController extends Controller
         $question = Question::find($request['question_id']);
         $question_owner = $question->owner();
 
+
+        if($user->points == 0){
+
+            return response()->json([
+                'success'   =>  false,
+                'message'   => "Please recharge",
+            ]);
+        }
+
         //validate data
         $validator = Validator::make($request->all(), array(
             'text' => 'required',
@@ -87,6 +96,9 @@ class AnswerController extends Controller
 
                 try{
                     $user->addFollowing($question_owner);
+                    $user->points = $user->points-1;
+                    $user->save();
+
                 }catch (Exception $e){
 
                 }

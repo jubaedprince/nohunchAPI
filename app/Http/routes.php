@@ -46,8 +46,9 @@ Route::group(['prefix'=>'/api'], function(){
        Route::get('authenticatedRoute', function(){
             return "You are in authenticated route.";
        });
-        //TODO:: add this to local code and push later
 
+        //add point
+        Route::post('point', 'UserController@addPoint');
         //get all users
         Route::get('users', 'UserController@getAllUsers');
             
@@ -64,6 +65,8 @@ Route::group(['prefix'=>'/api'], function(){
             Route::delete('photo/{photo}', 'PhotoController@destroy');
             //upload a photo
             Route::post('photo','PhotoController@store');
+
+
 
         });
 
