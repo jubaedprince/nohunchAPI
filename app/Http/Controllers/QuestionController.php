@@ -42,6 +42,7 @@ class QuestionController extends Controller
     {
         //authenticate and get user id
         $user = JWTAuth::parseToken()->authenticate();
+
         $user_id = $user->id;
 
 

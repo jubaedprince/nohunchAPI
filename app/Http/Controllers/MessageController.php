@@ -24,17 +24,15 @@ class MessageController extends Controller
     {
         $currentUserId = JWTAuth::parseToken()->authenticate()->id;
         // All threads, ignore deleted/archived participants
-        $threads = Thread::getAllLatest()->get();
+//        $threads = Thread::getAllLatest()->get();
         // All threads that user is participating in
 
-//        dd($threads);
         // All threads that user is participating in, with new messages
          $threads = Thread::forUser($currentUserId)->latest('updated_at')->get();
 
         $temp =[];
         foreach($threads as $thread){
             $message= Thread::findOrFail($thread->id)->messages()->latest()->first();
-//            dd($message->participantsUserIds());
             $ids = $thread->participantsUserIds();
             $temp2 = null;
             foreach($ids as $id){
@@ -43,14 +41,7 @@ class MessageController extends Controller
                 }
             }
             array_push($temp, [$thread,$message->body, User::find($temp2)]);
-//            array_push($temp, [$thread, User::find($message->user_id)->name]);
-//            array_push($temp, );
-//            $temp->add($message);
-
         }
-//        return json_encode($temp);
-
-//        return view('messenger.index', compact('threads', 'currentUserId'));
         return response()->json([
             'success'   =>  true,
             'message'   => "Successful",

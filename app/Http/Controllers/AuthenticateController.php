@@ -95,11 +95,13 @@ class AuthenticateController extends Controller
                 'error'     => $validator->errors()->all()
             ]);
         }
-
+        $user = $this->create($request->all());
+        $user->points = 10;
+        $user->save();
         return response()->json([
             'success'   =>  true,
             'message'   => "Success",
-            'user'     => $this->create($request->all())
+            'user'     => $user
         ]);
 
     }

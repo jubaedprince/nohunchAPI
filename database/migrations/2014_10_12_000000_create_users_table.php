@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->integer('age');
             $table->string('location')->nullable();
             $table->integer('photo_count')->unsigned();
+            $table->integer('points');
             $table->rememberToken();
             $table->timestamps();
         });

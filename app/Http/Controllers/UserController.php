@@ -40,9 +40,22 @@ class UserController extends Controller
     public function getAllUsers(){
         
          return response()->json([
-                 'success' => true,
-                'message' => "Users are found",
-                'users' => User::all(),
+             'success' => true,
+             'message' => "Users are found",
+             'users' => User::all(),
             ]);
     }
+
+    public function addPoint(Request $request){
+        $user = JWTAuth::parseToken()->authenticate();
+        $user->points = $user->points + $request->input('amount');
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'message' => "Users points added",
+            'users' => $user,
+        ]);
+    }
+
+
 }
