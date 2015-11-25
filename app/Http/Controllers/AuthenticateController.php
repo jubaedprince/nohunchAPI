@@ -10,6 +10,7 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Validator;
 use App\User;
+use Mail;
 
 class AuthenticateController extends Controller
 {
@@ -48,9 +49,25 @@ class AuthenticateController extends Controller
 
                 return response()->json([
                     'success'   =>  false,
-                    'message'   => "Failed",
+                    'message'   => "Enter a valid email",
                     'error'     => $validator->errors()->all()
                 ]);
+            }else{
+                //TODO:: send email here
+                $data = [
+                    'name' => 'Sunny',
+                    'email' => '',
+                    'code' => ''
+                ];
+
+                $user = [
+                    'name' => 'Sunny',
+                    'email' => 'rudrozzal@gmail.com'
+                ];
+
+                Mail::queue('welcome', $data, function($message) use ($user){
+                    $message->to($user->email, $user->name)->subject($user->name.', Please confirm your account @ Product Zap');
+                });
             }
         }else{
             return response()->json([
