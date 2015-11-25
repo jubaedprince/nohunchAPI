@@ -71,7 +71,7 @@ Route::group(['prefix'=>'/api'], function(){
         });
 
         //invite a user
-        Route::post('invite' , 'AuthenticateController@inviteUser')
+        Route::post('invite' , 'AuthenticateController@inviteUser');
         //question
         Route::resource('question', 'QuestionController');
         //get all answers of a question
