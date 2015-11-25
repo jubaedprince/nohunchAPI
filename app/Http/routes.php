@@ -29,12 +29,11 @@ Route::group(['prefix'=>'/api'], function(){
 
     //messages
     Route::group(['prefix' => 'messages'], function () {
-        //get all message threads
         Route::get('/', ['as' => 'messages', 'uses' => 'MessageController@index']);
-        //send message
+        Route::get('create', ['as' => 'messages.create', 'uses' => 'MessageController@create']);
         Route::post('/', ['as' => 'messages.store', 'uses' => 'MessageController@store']);
-        //show individual thread
         Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessageController@show']);
+        Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessageController@update']);
     });
 
     //user authentication & registration
@@ -57,11 +56,9 @@ Route::group(['prefix'=>'/api'], function(){
             //get current user information
             Route::get('/', 'AuthenticateController@getAuthenticatedUser');
             //set location
-            Route::get('/{user_id}', 'AuthenticateController@getUser');
-            //set location
             Route::post('location', 'UserController@setLocation');
             //get all photos of a user
-            Route::get('{user}/photo', 'PhotoController@index');
+            Route::get('{user}/photo/{photo}', 'PhotoController@index');
             //get photo count of a user
             Route::get('{user}/photocount', 'PhotoController@photoCount');
             //delete a photo
@@ -73,6 +70,8 @@ Route::group(['prefix'=>'/api'], function(){
 
         });
 
+        //invite a user
+        Route::post('invite' , 'AuthenticateController@inviteUser');
         //question
         Route::resource('question', 'QuestionController');
         //get all answers of a question

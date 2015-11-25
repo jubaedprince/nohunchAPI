@@ -36,6 +36,30 @@ class AuthenticateController extends Controller
         ]);
     }
 
+    public function inviteUser(Request $request){
+        if ($this_user = JWTAuth::parseToken()->authenticate()) {
+            $rules = [
+                'email' => 'required|email|max:255|unique:users',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+
+                return response()->json([
+                    'success'   =>  false,
+                    'message'   => "Failed",
+                    'error'     => $validator->errors()->all()
+                ]);
+            }
+        }else{
+            return response()->json([
+                'success'   =>  false,
+                'message'   => "please log in to invite someone.",
+            ]);
+        }
+    }
+
     public function getUser($user_id){
         if (!$this_user = JWTAuth::parseToken()->authenticate()) {
             return response()->json([
