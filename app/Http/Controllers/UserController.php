@@ -36,13 +36,20 @@ class UserController extends Controller
         }
 
     }
-    //TODO:: add this to local code and push later
+
     public function getAllUsers(){
-        
+
+        $users = User::all();
+//        return $users;
+        $filtered = $users->filter(function ($item) {
+            return !$item->is_following;
+        });
+
+        $filtered->all();
          return response()->json([
              'success' => true,
              'message' => "Users are found",
-             'users' => User::all(),
+             'users' => $filtered,
             ]);
     }
 

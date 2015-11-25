@@ -10,7 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Support\Facades\Validator;
-
+use JWTAuth;
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract
@@ -37,8 +37,8 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
-    
-    protected $appends = ['question'];
+
+    protected $appends = ['question','photos', 'is_following'];
     
     public function getQuestionAttribute(){
         $questions = Question::where('user_id',$this->id)->where('is_published',true)->first();
@@ -72,6 +72,15 @@ class User extends Model implements AuthenticatableContract,
 
     public function getAllFriends(){
         return $this->friends()->get();
+    }
+
+    public function getIsFollowingAttribute(){
+        $user = JWTAuth::parseToken()->authenticate();
+        if($user->followings()->find($this->id)!=null){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     //followers
@@ -108,8 +117,7 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public function isFollowing($user){
-
-        if($this->followings()->find($user)!=null){
+        if($this->followings()->find($user->id)!=null){
             return true;
         }else{
             return false;
