@@ -39,7 +39,7 @@ class User extends Model implements AuthenticatableContract,
     protected $hidden = ['password', 'remember_token'];
 
     protected $appends = ['question','photos', 'is_following'];
-    
+
     public function getQuestionAttribute(){
         $questions = Question::where('user_id',$this->id)->where('is_published',true)->first();
          return $questions ;
@@ -73,6 +73,11 @@ class User extends Model implements AuthenticatableContract,
     public function getAllFriends(){
         return $this->friends()->get();
     }
+
+    public function getPhotosAttribute(){
+        $photos = $this->photos()->get();
+        return $photos ;
+     }
 
     public function getIsFollowingAttribute(){
         $user = JWTAuth::parseToken()->authenticate();
