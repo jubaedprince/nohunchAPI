@@ -226,7 +226,7 @@ class AuthenticateController extends Controller
         $followers = $user->getAllFollowers();
 
         foreach($followers as $follower){
-            $ans = Answer::where('follower_user',$follower->id.'_'.$user->id)->first()->text;
+            $ans = Answer::where('follower_user',$follower->id.'_'.$user->id)->orderBy('created_at', 'desc')->first()->text;
             array_add($follower, 'answer', $ans);
         }
         return response()->json([
@@ -240,7 +240,6 @@ class AuthenticateController extends Controller
         $user = User::find($user_id);
         $this_user = JWTAuth::parseToken()->authenticate();
         $this_user->removeFollower($user);
-        $this_user->removeAnswersBy($user);
 
         return response()->json([
             'success'   =>  true
