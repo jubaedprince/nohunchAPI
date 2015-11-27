@@ -74,7 +74,7 @@ class MessageController extends Controller
 
         if($user_has!==false){
             //check if current user is  a participant of the thread
-            $users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
+            $users = User::whereIn('id', $thread->participantsUserIds($userId))->get();
             $thread->markAsRead($userId);
             $friend_name = $users->first();
             //add participant names to thread.
