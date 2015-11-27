@@ -74,16 +74,22 @@ class MessageController extends Controller
 
         if($user_has!==false){
             //check if current user is  a participant of the thread
-            $users = User::whereIn('id', $thread->participantsUserIds($userId))->get();
+
+            $ids = $thread->participantsUserIds();
+            $temp2 = null;
+            foreach($ids as $id){
+                if ($id != $userId){
+                    $temp2 = $id;
+                }
+            }
+
             $thread->markAsRead($userId);
-            $friend_name = $users->first();
-            //add participant names to thread.
 
             return response()->json([
                 'success'   =>  true,
                 'message'   => "Successful",
                 'messages'  => $thread->messages,
-                'friend'    => $friend_name,
+                'friend'    => User::find($temp2),
                 'my_name'   =>  JWTAuth::parseToken()->authenticate()->name
             ]);
         }else{
