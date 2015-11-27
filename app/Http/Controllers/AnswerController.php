@@ -60,9 +60,17 @@ class AnswerController extends Controller
         $user = JWTAuth::parseToken()->authenticate();
         $user_id = $user->id;
         $question = Question::find($request['question_id']);
+
+        if(!$question){
+            return response()->json([
+                'success'   =>  false,
+                'message'   => "invalid question id.",
+            ]);
+        }
+
         $question_owner = $question->owner();
 
-
+//        dd($question_owner);
         if($user->points == 0){
 
             return response()->json([
