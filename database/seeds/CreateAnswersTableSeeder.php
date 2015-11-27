@@ -15,10 +15,10 @@ class CreateAnswersTableSeeder extends Seeder
         DB::table('answers')->delete();
 
         $answers = array(
-            ['text' => 'answer1', 'user_id' => 3, 'question_id'=>1],
-            ['text' => 'answer2', 'user_id' => 2, 'question_id'=>2],
-            ['text' => 'answer3', 'user_id' => 1, 'question_id'=>2],
-            ['text' => 'answer4', 'user_id' => 4, 'question_id'=>1],
+            ['text' => 'answer1', 'user_id' => 3, 'question_id'=>1, 'follower_user'=>'3_2'],
+            ['text' => 'answer2', 'user_id' => 2, 'question_id'=>2, 'follower_user'=>'8_2'],
+            ['text' => 'answer3', 'user_id' => 1, 'question_id'=>2, 'follower_user'=>'7_2'],
+            ['text' => 'answer4', 'user_id' => 4, 'question_id'=>1, 'follower_user'=>'6_2'],
 
         );
 

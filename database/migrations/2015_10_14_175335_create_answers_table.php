@@ -17,19 +17,9 @@ class CreateAnswersTable extends Migration
             $table->string('text');
             $table->integer('user_id')->unsigned();
             $table->integer('question_id')->unsigned();
+            $table->string('follower_user');
             $table->softDeletes();
             $table->timestamps();
-
-//            $table->foreign('user_id')
-//                ->references('id')->on('users')
-//                ->onDelete('cascade');
-//
-//            $table->foreign('question_id')
-//                ->references('id')->on('questions')
-//                ->onDelete('cascade');
-
-
-
         });
     }
 

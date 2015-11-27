@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -222,9 +223,15 @@ class AuthenticateController extends Controller
     //follower
     public function getAllFollower(){
         $user = JWTAuth::parseToken()->authenticate();
+        $followers = $user->getAllFollowers();
+
+        foreach($followers as $follower){
+            $ans = Answer::where('follower_user',$follower->id.'_'.$user->id)->first()->text;
+            array_add($follower, 'answer', $ans);
+        }
         return response()->json([
             'success'   =>  true,
-            'follower'   =>  $user->getAllFollowers(),
+            'follower'   => $followers,
         ]);
     }
 

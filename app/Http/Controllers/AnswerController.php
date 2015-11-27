@@ -96,10 +96,12 @@ class AnswerController extends Controller
                     'answer'  => $request['text'],
                 ]);
             }else{
+                $follower_user = $user->id."_".$question_owner->id;
                 Answer::create([
                     'text' => $request['text'],
                     'user_id' => $user_id,
                     'question_id' => $request['question_id'],
+                    'follower_user' => $follower_user,
                 ]);
 
                 try{
