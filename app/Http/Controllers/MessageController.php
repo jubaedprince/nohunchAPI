@@ -28,7 +28,7 @@ class MessageController extends Controller
         // All threads that user is participating in
 
         // All threads that user is participating in, with new messages
-         $threads = Thread::forUser($currentUserId)->latest('updated_at')->get();
+         $threads = Thread::forUser($currentUserId)->latest('updated_at')->get()->unique();
 
         $temp =[];
         foreach($threads as $thread){
@@ -68,23 +68,32 @@ class MessageController extends Controller
         // show current user in list if not a current participant
         // $users = User::whereNotIn('id', $thread->participantsUserIds())->get();
         // don't show the current user in list
-        $userId = JWTAuth::parseToken()->authenticate()->id;
+
+        $currentUser = JWTAuth::parseToken()->authenticate();
+
+        $userId = $currentUser->id;
 
         $user_has = $thread->participantsUserIds()->unique()->search($userId);
 
         if($user_has!==false){
             //check if current user is  a participant of the thread
-            $users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
+
+            $ids = $thread->participantsUserIds();
+            $temp2 = null;
+            foreach($ids as $id){
+                if ($id != $userId){
+                    $temp2 = $id;
+                }
+            }
+
             $thread->markAsRead($userId);
-            $friend_name = $users->first();
-            //add participant names to thread.
 
             return response()->json([
                 'success'   =>  true,
                 'message'   => "Successful",
                 'messages'  => $thread->messages,
-                'friend'    => $friend_name,
-                'my_name'   =>  JWTAuth::parseToken()->authenticate()->name
+                'friend'    => User::find($temp2),
+                'myself'   =>  $currentUser,
             ]);
         }else{
             return response()->json([
