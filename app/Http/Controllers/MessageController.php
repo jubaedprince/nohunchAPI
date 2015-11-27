@@ -68,7 +68,10 @@ class MessageController extends Controller
         // show current user in list if not a current participant
         // $users = User::whereNotIn('id', $thread->participantsUserIds())->get();
         // don't show the current user in list
-        $userId = JWTAuth::parseToken()->authenticate()->id;
+
+        $currentUser = JWTAuth::parseToken()->authenticate();
+
+        $userId = $currentUser->id;
 
         $user_has = $thread->participantsUserIds()->unique()->search($userId);
 
@@ -90,7 +93,7 @@ class MessageController extends Controller
                 'message'   => "Successful",
                 'messages'  => $thread->messages,
                 'friend'    => User::find($temp2),
-                'my_name'   =>  JWTAuth::parseToken()->authenticate()->name
+                'myself'   =>  $currentUser,
             ]);
         }else{
             return response()->json([
