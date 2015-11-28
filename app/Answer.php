@@ -23,7 +23,7 @@ class Answer extends Model
      *
      * @var array
      */
-    protected $fillable = ['text', 'user_id', 'question_id'];
+    protected $fillable = ['text', 'user_id', 'question_id','follower_user'];
 
     protected $dates = ['deleted_at'];
 
