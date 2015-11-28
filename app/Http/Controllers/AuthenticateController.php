@@ -187,14 +187,14 @@ class AuthenticateController extends Controller
         $following = User::find($user_id);
         $this_user = JWTAuth::parseToken()->authenticate();
 
-        if($this_user->isFollowing($user_id)){
+        if($this_user->isFollowing($following)){
             return response()->json([
                 'success'   =>  true,
                 'message'   => "you are already following."
             ]);
         }else{
             $this_user->addFollowing($following);
-            if($following->isFollowing($this_user->id)){//both follow each other
+            if($following->isFollowing($this_user)){//both follow each other
                 $this_user->addFriend($following);
                 return response()->json([
                     'success'   =>  true,
@@ -202,7 +202,7 @@ class AuthenticateController extends Controller
                 ]);
             }
             return response()->json([
-                'success'   =>  true
+                'success'   =>  false
             ]);
         }
     }
