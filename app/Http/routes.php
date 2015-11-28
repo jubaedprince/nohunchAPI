@@ -51,7 +51,10 @@ Route::group(['prefix'=>'/api'], function(){
         Route::post('point', 'UserController@addPoint');
         //get all users
         Route::get('users', 'UserController@getAllUsers');
-            
+        //get user by id
+        Route::get('user/{user}', 'UserController@getUser');
+
+
         Route::group(['prefix' => 'user'], function(){
             //get current user information
             Route::get('/', 'AuthenticateController@getAuthenticatedUser');

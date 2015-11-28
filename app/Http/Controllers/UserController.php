@@ -53,6 +53,17 @@ class UserController extends Controller
             ]);
     }
 
+    public function getUser($user_id){
+
+        $users = User::find($user_id);
+
+        return response()->json([
+            'success' => true,
+            'message' => "Users are found",
+            'users' => $users,
+        ]);
+    }
+
     public function addPoint(Request $request){
         $user = JWTAuth::parseToken()->authenticate();
         $user->points = $user->points + $request->input('amount');
