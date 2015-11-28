@@ -123,7 +123,8 @@ class AuthenticateController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
-            'age' => 'integer|required|min:18|max:120'
+            'age' => 'integer|required|min:18|max:120',
+            'gender' => 'required'
         ];
 
         $validator = Validator::make($request->all(), $rules);
