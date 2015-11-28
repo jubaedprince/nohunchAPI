@@ -11,6 +11,9 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
+use Mockery\Exception;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract
@@ -80,12 +83,17 @@ class User extends Model implements AuthenticatableContract,
      }
 
     public function getIsFollowingAttribute(){
-        $user = JWTAuth::parseToken()->authenticate();
-        if($user->followings()->find($this->id)!=null){
-            return true;
-        }else{
-            return false;
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            if($user->followings()->find($this->id)!=null){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (JWTException $ex){
+
         }
+
     }
 
     //followers
