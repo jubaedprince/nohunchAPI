@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
                          $published_questions->save();
                      }
              }
+        
          });
     }
 

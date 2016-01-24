@@ -164,7 +164,8 @@ class MessageController extends Controller
 
         return response()->json([
         'success'   =>  'true',
-        'message'   =>  'Message sent.'
+        'message'   =>  'Message sent.',
+        'thread_id'    => $thread->id
     ]);
     }
 //    /**

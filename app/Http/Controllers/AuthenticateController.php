@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -123,7 +124,8 @@ class AuthenticateController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
-            'age' => 'integer|required|min:18|max:120'
+            'age' => 'integer|required|min:18|max:120',
+            'gender' => ''
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -177,6 +179,7 @@ class AuthenticateController extends Controller
             'password' => bcrypt($data['password']),
             'age' => $data['age'],
             'photo_count'   => 0,
+            'gender' => $data['gender']
         ]);
     }
 
@@ -186,14 +189,14 @@ class AuthenticateController extends Controller
         $following = User::find($user_id);
         $this_user = JWTAuth::parseToken()->authenticate();
 
-        if($this_user->isFollowing($user_id)){
+        if($this_user->isFollowing($following)){
             return response()->json([
                 'success'   =>  true,
                 'message'   => "you are already following."
             ]);
         }else{
             $this_user->addFollowing($following);
-            if($following->isFollowing($this_user->id)){//both follow each other
+            if($following->isFollowing($this_user)){//both follow each other
                 $this_user->addFriend($following);
                 return response()->json([
                     'success'   =>  true,
@@ -201,7 +204,7 @@ class AuthenticateController extends Controller
                 ]);
             }
             return response()->json([
-                'success'   =>  true
+                'success'   =>  false
             ]);
         }
     }
@@ -222,9 +225,15 @@ class AuthenticateController extends Controller
     //follower
     public function getAllFollower(){
         $user = JWTAuth::parseToken()->authenticate();
+        $followers = $user->getAllFollowers();
+
+        foreach($followers as $follower){
+            $ans = Answer::where('follower_user',$follower->id.'_'.$user->id)->orderBy('created_at', 'desc')->first()->text;
+            array_add($follower, 'answer', $ans);
+        }
         return response()->json([
             'success'   =>  true,
-            'follower'   =>  $user->getAllFollowers(),
+            'follower'   => $followers,
         ]);
     }
 
@@ -233,7 +242,6 @@ class AuthenticateController extends Controller
         $user = User::find($user_id);
         $this_user = JWTAuth::parseToken()->authenticate();
         $this_user->removeFollower($user);
-        $this_user->removeAnswersBy($user);
 
         return response()->json([
             'success'   =>  true

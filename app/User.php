@@ -11,6 +11,9 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
+use Mockery\Exception;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract
@@ -80,12 +83,17 @@ class User extends Model implements AuthenticatableContract,
      }
 
     public function getIsFollowingAttribute(){
-        $user = JWTAuth::parseToken()->authenticate();
-        if($user->followings()->find($this->id)!=null){
-            return true;
-        }else{
-            return false;
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            if($user->followings()->find($this->id)!=null){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (JWTException $ex){
+
         }
+
     }
 
     //followers
@@ -100,6 +108,17 @@ class User extends Model implements AuthenticatableContract,
 
     public function removeFollower(User $user){
         $this->followers()->detach($user->id);
+
+        try{
+            $answers = Answer::where('follower_user',$user->id.'_'.$this->id)->get();
+            if($answers){
+                foreach($answers as $ans){
+                    $ans->delete();
+                }
+            }
+        }catch (Exception $ex){
+
+        }
     }
 
     //folllowing
@@ -114,11 +133,20 @@ class User extends Model implements AuthenticatableContract,
 
     public function removeFollowing(User $user){
         $this->followings()->detach($user->id);
+        try{
+            $answers = Answer::where('follower_user',$user->id.'_'.$this->id)->get();
+            if($answers){
+                foreach($answers as $ans){
+                    $ans->delete();
+                }
+            }
+        }catch (Exception $ex){
+
+        }
     }
 
     public function getAllFollowings(){
         return $this->followings()->get();
-        //return $this->followers()->get();
     }
 
     public function isFollowing($user){
@@ -144,18 +172,15 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public function removeAnswersBy($user){
-        $questions = Question::where('user_id',$this->id)->where('is_published',true)->first();
-
-        if($questions!=null){
-            $answer = Answer::where('question_id',$questions->id)->where('user_id',$user->id)->first();
-//            dd($answer);
-            if($answer!=null){
-                $answer->delete();
-                return "success";
-            }else{
-                return "no answer found";
+        try{
+            $answers = Answer::where('follower_user',$user->id.'_'.$this->id)->get();
+            if($answers){
+                foreach($answers as $ans){
+                    $ans->delete();
+                }
             }
+        }catch (Exception $ex){
+
         }
-        return "no published questions";
     }
 }
