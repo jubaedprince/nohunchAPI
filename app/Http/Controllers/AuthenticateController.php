@@ -125,7 +125,7 @@ class AuthenticateController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
             'age' => 'integer|required|min:18|max:120',
-            'gender' => 'required'
+            'gender' => ''
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -179,6 +179,7 @@ class AuthenticateController extends Controller
             'password' => bcrypt($data['password']),
             'age' => $data['age'],
             'photo_count'   => 0,
+            'gender' => $data['gender']
         ]);
     }
 
